@@ -14,8 +14,9 @@ let create path = //Directory.CreateDirectory(Path.GetDirectoryName(path))
     if not (System.String.IsNullOrEmpty(directoryName)) then
         Directory.CreateDirectory(directoryName) |> ignore
 
-let isSpace line : bool = System.String.IsNullOrWhiteSpace(string line) = false
-let trimStart line : string = (string line).Trim().Replace("* [", "")
+let isUseful line : bool = System.String.IsNullOrWhiteSpace(string line) = false && (string line).StartsWith("* [") = true && (string line).Contains("](") = true && (string line).EndsWith(")") = true
+
+let trimStart line : string = (string line).Replace("* [", "")
 
 // (input.[..(input.Length - 2)]) better?
 let trimEnd chars : string = (string chars).Remove((string chars).Length - 1, 1)
@@ -26,7 +27,8 @@ let split line : string[] = (string line).Split([|"]("|], StringSplitOptions.Rem
 let main argv =
     let x =
         File.ReadAllLines("SUMMARY.md")
-        |> Seq.filter isSpace
+        |> Seq.map (fun x -> (string x).Trim())
+        |> Seq.filter isUseful
         |> Seq.map trimStart
         |> Seq.map trimEnd
         |> Seq.map split
