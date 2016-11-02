@@ -1,27 +1,31 @@
 ﻿open System
 open System.IO
 
-let write item =
-    File.AppendAllText(item |> Seq.skip 1 |> Seq.head, "# " + Path.GetFileNameWithoutExtension(item |> Seq.head))
+let delimiter = "]("
+let head = "* ["
+let tail = ")"
+
+let write (item : seq<string>) =
+    File.AppendAllText(item |> Seq.last, "# " + Path.GetFileNameWithoutExtension(item |> Seq.head))
 
 // ty @DaveHogan https://github.com/fsharp/FAKE/issues/996
-let create path =
+let create (path : string) =
     let directoryName = Path.GetDirectoryName(path)
-    if not (System.String.IsNullOrEmpty(directoryName)) then
+    if not (String.IsNullOrEmpty(directoryName)) then
         Directory.CreateDirectory(directoryName) |> ignore
 
-let isUseful line : bool =
-    System.String.IsNullOrWhiteSpace(string line) = false
-    && (string line).StartsWith("* [") = true
-    && (string line).Contains("](") = true
-    && (string line).EndsWith(")") = true
+let isUseful (line : string) : bool =
+    not (String.IsNullOrWhiteSpace(line))
+    && line.StartsWith(head)
+    && line.Contains(delimiter)
+    && line.EndsWith(tail)
 
 // (input.[..(input.Length - 2)]) better?
-let trim line : string =
-    (string line).Substring(3).Remove((string line).Length - (1 + 3), 1)
+let trim (line : string) : string =
+    line.Substring(head.Length).Remove(line.Length - (tail.Length + head.Length), tail.Length)
 
-let split line : string[] =
-    (string line).Split([|"]("|], StringSplitOptions.RemoveEmptyEntries)
+let split (line : string) : string[] =
+    line.Split([|delimiter|], StringSplitOptions.RemoveEmptyEntries)
 
 [<EntryPoint>]
 let main argv =
@@ -33,6 +37,6 @@ let main argv =
         |> Seq.map split
     for item in x do
         printfn "%A" item
-        create (item |> Seq.skip 1 |> Seq.head)
+        create (item |> Seq.last)
         write item
     0 // return an integer exit code
