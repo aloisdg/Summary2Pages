@@ -2,15 +2,19 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable",
+    "emitEntryPoint": true,
     "compilerName": "fsc",
     "compile": {
       "includeFiles": [
-        "Library.fs"
+        "Program.fs"
       ]
     }
   },
   "dependencies": {
-    "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160509"
+    "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160509",
+    "Fummary": {
+      "target": "project"
+    }
   },
   "tools": {
     "dotnet-compile-fsc": {

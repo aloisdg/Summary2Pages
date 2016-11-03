@@ -1,20 +1,28 @@
 {
-  "version": "1.0.0-*",
+  "version": "0.1.0-*",
   "buildOptions": {
-    "debugType": "portable",
+    "emitEntryPoint": true,
     "compilerName": "fsc",
     "compile": {
       "includeFiles": [
-        "Library.fs"
+        "Program.fs"
       ]
     }
   },
   "dependencies": {
-    "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160509"
+    "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160509",
+    "xunit": "2.1.0",
+    "FsUnit.Xunit": "2.3.0-*",
+    "dotnet-test-xunit": "1.0.0-*",
+    "Fummary": {
+      "target": "project"
+    }
   },
+  "testRunner": "xunit",
   "tools": {
+    "xunit.runner.console": "2.1.0",
     "dotnet-compile-fsc": {
-      "version": "1.0.0-preview2-*",
+      "version": "1.0.0-*",
       "imports": [
         "dnxcore50",
         "portable-net45+win81",
@@ -25,6 +33,7 @@
   "frameworks": {
     "netcoreapp1.0": {
       "dependencies": {
+        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-160509",
         "Microsoft.NETCore.App": {
           "type": "platform",
           "version": "1.0.0"
