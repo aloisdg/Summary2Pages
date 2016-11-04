@@ -40,8 +40,8 @@
         }
       },
       "imports": [
-        "portable-net45+win8",
-        "dnxcore50"
+        "dnxcore50",
+        "portable-net45+win8"
       ]
     }
   }
