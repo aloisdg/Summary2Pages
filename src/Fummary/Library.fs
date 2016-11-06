@@ -18,7 +18,10 @@ module Common =
         line.Substring(head.Length).Remove(line.Length - (tail.Length + head.Length), tail.Length)
 
     let private split (line : string) : string[] =
-        line.Split([|delimiter|], StringSplitOptions.RemoveEmptyEntries)
+        let tab = line.Split([|delimiter|], StringSplitOptions.RemoveEmptyEntries)
+        if not (tab |> Seq.length = 2) then
+             raise (new FormatException("line"))
+        tab
 
     let parse (lines : seq<string>) : seq<string[]> =
         lines

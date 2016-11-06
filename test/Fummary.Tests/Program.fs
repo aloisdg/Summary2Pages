@@ -44,6 +44,11 @@ let ``When ask for file in folder and file expect sequence of content and path``
     (Fummary.Common.parse [folder] |> Seq.last |> Seq.head) |> should equal folderContent
     (Fummary.Common.parse [folder] |> Seq.last |> Seq.last) |> should equal folderPath
 
+[<Fact>]
+let ``When ask for bad format line expect FormatException``() =
+    let file = "* [Introd](uction](Introduction.md)"
+    (Fummary.Common.parse [file]) |> should throw typeof<System.FormatException>
+
 // [<Fact>]
 // let ``When 2.0 is added to 2.0 expect 4.01``() =
 //     add 2.0 2.0 |> should (equalWithin 0.1) 4.01
